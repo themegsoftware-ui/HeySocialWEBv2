@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title id="siteTitle">Hey!Social Web</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700..800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header id="siteHeader">Hey!Social Web</header>
+
+<div class="nav-container">
+    <div class="nav-brand-text">Hey!Social Menü</div>
+    <button class="theme-switch" id="themeSwitch" type="button" onclick="toggleThemeMode()" aria-label="Tema değiştir">☀️</button>
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu(event)">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <nav id="mainNav"></nav>
+</div>
+
+<div class="container">
+    <div id="flashMsg" class="flash-msg"></div>
+
+    <div id="page-login" class="app-page">
+        <h2>Giriş Yap</h2>
+        <form onsubmit="handleLogin(event)">
+            <input type="text" id="login-username" placeholder="Kullanıcı Adı veya Eğitmen Adı" required autofocus>
+            <input type="password" id="login-password" placeholder="Şifre" required>
+            <button type="submit">Sisteme Giriş Yap</button>
+            <button type="button" class="btn-demo" onclick="startDemoMode()">Demoyu Gör</button>
+        </form>
+        <p>Henüz bir hesabınız yok mu? <a onclick="navigateTo('register')" style="color:var(--primary-color); cursor:pointer; font-weight:600;">Buradan Kayıt Olun</a></p>
+    </div>
+
+    <div id="page-register" class="app-page">
+        <h2>Kayıt Formu</h2>
+        <form onsubmit="handleRegister(event)">
+            <input type="email" id="reg-email" placeholder="E-posta Adresiniz" required>
+            <input type="text" id="reg-username" placeholder="Kullanıcı Adınız (Eğitmenseniz Tam Adınız)" required>
+            <input type="password" id="reg-password" placeholder="Şifreniz" required>
+            <select id="reg-role" required>
+                <option value="">Platform Rolünüzü Seçin</option>
+                <option value="kullanici">HeySocial Üyesi (Sporcu Katılımcı)</option>
+                <option value="personel">HeySocial Eğitmeni (Yetkili Personel)</option>
+            </select>
+            <button type="submit">Kayıt Ol</button>
+        </form>
+        <p>Zaten bir hesabınız var mı? <a onclick="navigateTo('login')" style="color:var(--primary-color); cursor:pointer; font-weight:600;">Giriş Yapın</a></p>
+    </div>
+
+    <div id="page-home" class="app-page">
+        <h1 id="view-anasayfa_h1"></h1>
+        <p id="view-anasayfa_p1"></p>
+        
+        <div class="card" style="border-left-color: #4caf50;">
+            <h3 id="view-yarismalar_baslik"></h3>
+            <p id="view-yarismalar_p"></p>
+        </div>
+
+        <div class="card" style="background-color: rgba(251, 192, 45, 0.08); color: #fbc02d; border-left-color: #fbc02d;">
+            <h3>✨ Günün Motivasyon Sözü</h3>
+            <p><em id="view-motivasyon_sozu" style="color: #fbc02d;"></em></p>
+        </div>
+        
+        <div class="card">
+            <h2 id="view-kurucu_baslik"></h2>
+            <p><strong id="view-kurucu_kimdir" style="color:var(--primary-color);"></strong></p>
+            <p id="view-kurucu_detay"></p>
+            <img id="view-kurucu_resim" src="" alt="Kurucu Görseli" style="width:100%; max-width:400px; border-radius:20px; margin: 20px 0; box-shadow: var(--neon-glow);">
+        </div>
+
+        <h2 id="view-isleyis_baslik"></h2>
+        <p id="view-isleyis_p"></p>
+        
+        <div style="margin-top: 35px; text-align: center;">
+            <a id="view-whatsapp_link" href="" target="_blank" style="display:inline-block; background: linear-gradient(135deg, #25D366, #128C7E); color:white; padding:16px 36px; font-weight:700; border-radius:20px; text-decoration:none; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); transition:transform 0.3s ease;">🟩 WhatsApp Grubumuza Katılın</a>
+        </div>
+    </div>
+
+    <div id="page-antrenman_programi" class="app-page">
+        <h2>AI Destekli Antrenman Planlayıcı</h2>
+        <div id="workout-form-block">
+            <form onsubmit="generateWorkout(event)">
+                <label style="font-weight:600; display:block; margin-bottom:12px;">Çalıştırmak İstediğiniz Kas Grupları:</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label"><input type="checkbox" name="bolge" value="Kollar"> Kollar</label>
+                    <label class="checkbox-label"><input type="checkbox" name="bolge" value="Bacaklar"> Bacaklar</label>
+                    <label class="checkbox-label"><input type="checkbox" name="bolge" value="Karın"> Karın</label>
+                    <label class="checkbox-label"><input type="checkbox" name="bolge" value="Sırt"> Sırt</label>
+                    <label class="checkbox-label"><input type="checkbox" name="bolge" value="Omuz"> Omuz</label>
+                    <label class="checkbox-label"><input type="checkbox" name="bolge" value="Kalça"> Kalça</label>
+                </div>
+
+                <label style="font-weight:600; display:block; margin-bottom:12px;">Hedefiniz:</label>
+                <select id="hedefSelect" onchange="toggleOtherInput()" required>
+                    <option value="">Seçiniz</option>
+                    <option value="Yağ Yakımı & Kondisyon">Yağ Yakımı & Kondisyon</option>
+                    <option value="Kas Kütlesi Artırma">Kas Kütlesi Artırma</option>
+                    <option value="Sıkılaşma / Fit Görünüm">Sıkılaşma / Fit Görünüm</option>
+                    <option value="diger">Diğer (Kendim Yazacağım)</option>
+                </select>
+                <input type="text" id="digerInput" placeholder="Kendi hedefinizi buraya ekleyin..." style="display:none;">
+
+                <label style="font-weight:600; display:block; margin-bottom:12px;">Mevcut Kondisyon Seviyeniz:</label>
+                <select id="seviyeSelect" required>
+                    <option value="">Seçiniz</option>
+                    <option value="Başlangıç">Başlangıç</option>
+                    <option value="Orta">Orta Seviye</option>
+                    <option value="İleri">İleri Düzey (Pro)</option>
+                </select>
+                <button type="submit">Programımı Oluştur</button>
+            </form>
+        </div>
+        <div id="workout-result-block" style="display:none;"></div>
+    </div>
+
+    <div id="page-gunun_egzersizi" class="app-page">
+        <h2>🔥 Günün Challenge Görevi</h2>
+        <div class="card" style="text-align:center; border-left-color: #ff9800;">
+            <h3 style="color:#ff9800;" id="challenge-title"></h3>
+            <p style="font-size:18px;" id="challenge-detail"></p>
+        </div>
+        <button onclick="loadNewChallenge()">Başka Bir Görev Getir</button>
+    </div>
+
+    <div id="page-kalori_takip" class="app-page">
+        <h2>Sağlık Metrikleri & Kalori Hesaplayıcı</h2>
+        <div id="bmi-result-card"></div>
+        <form onsubmit="calculateBMI(event)">
+            <input type="number" id="bmi-kilo" placeholder="Ağırlık (kg)" required step="0.1">
+            <input type="number" id="bmi-boy" placeholder="Boy uzunluğu (cm)" required>
+            <input type="number" id="bmi-yas" placeholder="Yaşınız" required>
+            <select id="bmi-aktivite" required>
+                <option value="1.2">Hareketsiz Yaşam</option>
+                <option value="1.375">Hafif Seviye Hareket (1-3 gün spor)</option>
+                <option value="1.55">Orta Seviye Hareket (3-5 gün yoğun spor)</option>
+                <option value="1.725">İleri Derece Aktif (Her gün ağır idman)</option>
+            </select>
+            <button type="submit">Analiz Et ve Profilime Senkronize Et</button>
+        </form>
+    </div>
+
+    <div id="page-liderlik_tablosu" class="app-page">
+        <h2>HeySocial Topluluk Liderlik Tablosu</h2>
+        <div class="card" style="padding:10px; overflow-x:auto; border-left:none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sıra</th>
+                        <th>Ad Soyad</th>
+                        <th>Toplam Skor</th>
+                        <th>Kazanılan Unvan</th>
+                    </tr>
+                </thead>
+                <tbody id="liderlik-tablo-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="page-guncel_etkinlikler" class="app-page">
+        <h2>📅 Güncel Etkinlikler</h2>
+        <p>HeySocial içinde planlanan antrenmanları, topluluk buluşmalarını ve yarışma duyurularını buradan takip edebilirsiniz.</p>
+        <div id="etkinlikler-showcase" class="event-showcase"></div>
+    </div>
+
+    <div id="page-profilim" class="app-page">
+        <h1>Profil Bilgileri</h1>
+        <div class="card" style="text-align:center;">
+            <div class="profile-photo-wrapper" onclick="document.getElementById('profilePhotoInput').click()">
+                <img id="profile-avatar" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profil">
+            </div>
+            <form id="photoForm" style="display:none;">
+                <input type="file" id="profilePhotoInput" accept="image/*" onchange="uploadPhoto(event)" />
+            </form>
+            <h2 id="profile-username-text"></h2>
+            <p style="color:var(--primary-color); font-weight:bold;" id="profile-role-text"></p>
+            <p><strong>E-posta:</strong> <span id="profile-email-text"></span></p>
+            <p><strong>Vücut Kitle Endeksiniz:</strong> <span id="profile-bmi-text">Hesaplanmadı</span></p>
+        </div>
+    </div>
+
+    <div id="page-ayarlar" class="app-page">
+        <h2>Görünüm Ayarları</h2>
+        <form onsubmit="saveSettings(event)">
+            <select id="setting-theme" required>
+                <option value="light">Açık Tema (Normal)</option>
+                <option value="dark">Koyu Tema (Karanlık Mod)</option>
+            </select>
+            <button type="submit">Ayarları Kaydet</button>
+        </form>
+    </div>
+
+    <div id="page-iletisim" class="app-page">
+        <h2>İletişim & Kurumsal Destek</h2>
+        <div class="card">
+            <h3>📞 Güncel İletişim Hatları</h3>
+            <p><strong>Telefon (Çağın Mert Parlak):</strong> <span id="view-iletisim_tel"></span></p>
+            <p>📸 <strong>Çağın Hoca Instagram:</strong> <a id="view-instagram_cagin" href="" target="_blank" style="color:var(--primary-color); text-decoration:none; font-weight:600;">Profil Linki</a></p>
+            <p>📸 <strong>HeySocial Instagram:</strong> <a id="view-instagram_kurumsal" href="" target="_blank" style="color:var(--primary-color); text-decoration:none; font-weight:600;">Profil Linki</a></p>
+        </div>
+    </div>
+
+    <div id="page-hizmet_politikasi" class="app-page policy-page">
+        <h2>Hizmet Politikası</h2>
+        <div class="card">
+            <h3>HeySocial hizmet kullanım esasları</h3>
+            <p>HeySocial; spor motivasyonu, etkinlik duyuruları, liderlik tablosu ve kişisel gelişim araçları sunan demo nitelikli bir topluluk arayüzüdür. Platformdaki kayıt, demo oturumu, profil fotoğrafı, BMI/kalori hesaplama ve CMS içerikleri tarayıcı üzerinde saklanan sahte veya kullanıcı tarafından girilen verilerle çalışır.</p>
+            <p>Kullanıcılar, paylaştıkları bilgilerin doğru ve kendilerine ait olduğunu kabul eder. Etkinlik, yarışma, ödül ve antrenman içerikleri bilgilendirme amaçlıdır; sağlık, beslenme veya profesyonel spor danışmanlığı yerine geçmez.</p>
+            <p>HeySocial, kullanıcı deneyimini geliştirmek için tema tercihi, çerez seçimi ve demo oturum bilgilerini yerel depolamada tutabilir. Hizmeti kullanmaya devam eden kullanıcılar bu metindeki temel koşulları okumuş sayılır.</p>
+        </div>
+    </div>
+
+    <div id="page-gizlilik_politikasi" class="app-page policy-page">
+        <h2>Gizlilik Politikası</h2>
+        <div class="card">
+            <h3>Veriler nasıl kullanılır?</h3>
+            <p>Bu sürümde kullanıcı adı, e-posta, rol, profil fotoğrafı, BMI/kalori sonucu, liderlik tablosu, etkinlikler, tema ve çerez tercihleri tarayıcı localStorage alanında tutulur. Bu bilgiler harici bir sunucuya gönderilmez.</p>
+            <p>Gizlilik politikamızın amacı, hangi verilerin neden tutulduğunu açık şekilde göstermektir. Veriler; oturumun devam etmesi, demo deneyiminin çalışması, profil bilgilerinin gösterilmesi, CMS panelinde eklenen içeriklerin kaybolmaması ve tema/çerez tercihlerinin hatırlanması için kullanılır.</p>
+            <p>Tarayıcı verilerini temizlediğinizde bu bilgiler de silinebilir. Ortak cihazlarda oturum kapatmanız ve hassas kişisel bilgi girmemeniz önerilir.</p>
+        </div>
+    </div>
+
+    <div id="page-kvkk" class="app-page policy-page">
+        <h2>KVKK Aydınlatma Metni</h2>
+        <div class="card">
+            <h3>Kişisel veri bilgilendirmesi</h3>
+            <p>6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında, HeySocial arayüzünde girilen bilgiler demo ve topluluk yönetimi amacıyla işlenir. Bu demo yapıda veriler kullanıcının kendi tarayıcısında saklanır ve dış sistemlere aktarılmaz.</p>
+            <p>İşlenebilecek veri kategorileri; kimlik benzeri kullanıcı adı, iletişim için e-posta, uygulama rolü, profil görseli, spor metrikleri, etkinlik ve liderlik kayıtlarıdır. Bu veriler uygulama deneyiminin sağlanması, içeriklerin hatırlanması ve kullanıcı tercihinin korunması amacıyla kullanılır.</p>
+            <p>KVKK kapsamındaki haklarınız doğrultusunda verilerinizi tarayıcı depolamasını temizleyerek silebilir, oturumdan çıkabilir veya demo yerine gerçek kişisel veri kullanmamayı tercih edebilirsiniz.</p>
+        </div>
+    </div>
+
+    <div id="page-cerez_politikasi" class="app-page policy-page">
+        <h2>Çerez Politikası</h2>
+        <div class="card">
+            <h3>Çerez ve yerel depolama tercihleri</h3>
+            <p>HeySocial; klasik sunucu çerezleri yerine tarayıcı localStorage alanını kullanır. Bu alan tema tercihinizi, çerez onayınızı, demo oturumunuzu ve uygulama içi sahte verileri hatırlamak için kullanılır.</p>
+            <p>Zorunlu kayıtlar; oturum, güvenli gezinme deneyimi ve temel uygulama tercihleri için gereklidir. Deneyim kayıtları; tema, profil, etkinlik ve CMS düzenlemelerini hatırlamak için kullanılır. Pazarlama veya üçüncü taraf takip çerezi bu demo içinde kullanılmaz.</p>
+            <p>Çerezleri kabul etmek, deneyim kayıtlarının saklanmasına izin vermek anlamına gelir. Sadece gerekli seçeneğiyle minimum tercih kaydı tutulur.</p>
+        </div>
+    </div>
+
+    <div id="page-personel_paneli" class="app-page">
+        <nav class="didem-nav">
+            <div class="didem-logo">🚀 HeySocial CMS Panel</div>
+            <button class="didem-hamburger-btn" onclick="toggleDidemMenu(event)">☰</button>
+            <div class="didem-menu" id="didemMenu">
+                <a onclick="navigateTo('home')">🏠 Ana Sayfa</a>
+                <a href="#liderlik-sec">🏆 Liderlik Düzenle</a>
+                <a href="#etkinlikler-sec">📅 Etkinlik Düzenle</a>
+                <a href="#ayarlar-sec">⚙️ Marka Ayarları</a>
+            </div>
+        </nav>
+
+        <h2>⚙️ HeySocial Merkezi Kontrol ve Tasarım Paneli (CMS)</h2>
+        <p>Sayın Eğitmen <strong id="cms-user-welcome" style="color:var(--primary-color);"></strong>, sitenin tüm renk paletlerini, içeriklerini, liderlik listesini ve güncel etkinlikleri aşağıdan canlı olarak değiştirebilirsin.</p>
+        
+        <div id="liderlik-sec" class="admin-section-title">🏆 Liderlik Tablosu Canlı Veri Editörü</div>
+        <div class="card" style="border-left-color: #ff9800; margin-bottom: 30px;">
+            <p style="font-size:14px; color:var(--text-muted); margin-bottom:15px;">Sıralama listesindeki dereceleri, yarışmacı isimlerini, puanları ve madalyaları aşağıdan anlık güncelleyebilirsiniz:</p>
+            <div id="cms-liderler-listesi"></div>
+            
+            <div style="margin-top: 20px; padding: 20px; border: 2px dashed #ff9800; background: rgba(255, 152, 0, 0.05); border-radius: 16px;">
+                <strong style="display:block; margin-bottom:15px; color: #ff9800; text-align: center;">➕ Yeni Yarışmacı Satırı Ekle</strong>
+                <form onsubmit="addLider(event)" style="margin:0; display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    <input type="text" id="add-lider-sira" placeholder="Sıra" style="width: 70px; padding: 12px; text-align: center; margin-bottom:0;" required>
+                    <input type="text" id="add-lider-isim" placeholder="Yarışmacı Adı" style="width: 200px; padding: 12px; text-align: center; margin-bottom:0;" required>
+                    <input type="text" id="add-lider-skor" placeholder="Puan / Skor" style="width: 110px; padding: 12px; text-align: center; margin-bottom:0;" required>
+                    <input type="text" id="add-lider-unvan" placeholder="Unvan (Örn: 🥇 Şampiyon)" style="width: 170px; padding: 12px; text-align: center; margin-bottom:0;">
+                    <button type="submit" style="background: #ff9800; color: white; border: none; padding: 12px 24px; font-weight: bold; width: auto; border-radius:14px; box-shadow:none;">➕ Tabloya Ekle</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="etkinlikler-sec" class="admin-section-title">📅 Güncel Etkinlikler Canlı Editörü</div>
+        <div class="card" style="border-left-color: #00bcd4; margin-bottom: 30px;">
+            <p style="font-size:14px; color:var(--text-muted); margin-bottom:15px;">Platformda yapılacak olan en güncel etkinlikleri, turnuvaları ve toplantıları buradan anlık yönetebilirsiniz:</p>
+            <div id="cms-etkinlikler-listesi"></div>
+
+            <div style="margin-top: 20px; padding: 20px; border: 2px dashed #00bcd4; background: rgba(0, 188, 212, 0.05); border-radius: 16px;">
+                <strong style="display:block; margin-bottom:15px; color: #00bcd4; text-align: center;">📅 Yeni Güncel Etkinlik Ekle</strong>
+                <form onsubmit="addEtkinlik(event)" style="margin:0; display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    <input type="text" id="add-etk-tarih" placeholder="Tarih (Örn: 25 Haz 18:00)" style="width: 140px; padding: 12px; text-align: center; margin-bottom:0;" required>
+                    <input type="text" id="add-etk-baslik" placeholder="Etkinlik Başlığı" style="width: 200px; padding: 12px; text-align: center; margin-bottom:0;" required>
+                    <input type="text" id="add-etk-detay" placeholder="Etkinlik Detayı / Amacı" style="width: 250px; padding: 12px; text-align: center; margin-bottom:0;" required>
+                    <input type="text" id="add-etk-konum" placeholder="Konum (Örn: Discord)" style="width: 140px; padding: 12px; text-align: center; margin-bottom:0;">
+                    <button type="submit" style="background: #00bcd4; color: white; border: none; padding: 12px 24px; font-weight: bold; width: auto; border-radius:14px; box-shadow:none;">➕ Etkinliği Ekle</button>
+                </form>
+            </div>
+        </div>
+
+        <form id="ayarlar-sec" onsubmit="saveCMSData(event)">
+            <div class="admin-section-title">🎨 Bölüm 1: Kurumsal Renk Paleti & Marka Ayarları</div>
+            <div class="card" style="border-left-color: #ff9800;">
+                <div class="panel-grid">
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">Sitenin Büyük Başlığı / Logo Metni:</label>
+                        <input type="text" id="cms-site_baslik" required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">Ana Tema Rengi (Butonlar, Çizgiler):</label>
+                        <input type="color" id="cms-renk_primary">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">Menü Çubuğu (Navigasyon) Rengi:</label>
+                        <input type="color" id="cms-renk_nav_bg">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">Üst Banner Geçiş Rengi (Renk 1):</label>
+                        <input type="color" id="cms-renk_header_gradient_1">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">Üst Banner Geçiş Rengi (Renk 2):</label>
+                        <input type="color" id="cms-renk_header_gradient_2">
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-section-title">📝 Bölüm 2: Ana Sayfa Metin ve Duyuru Alanları</div>
+            <div class="card" style="border-left-color: #ff9800;">
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Ana Sayfa Giriş Başlığı:</label>
+                <input type="text" id="cms-anasayfa_h1" required>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Ana Giriş / Kuruluş Amacı Paragrafı:</label>
+                <textarea id="cms-anasayfa_p1" rows="4" required></textarea>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Yarışma Kartı Başlığı:</label>
+                <input type="text" id="cms-yarismalar_baslik" required>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Yarışma ve Ödül Detay Metni:</label>
+                <textarea id="cms-yarismalar_p" rows="3" required></textarea>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Günün Motivasyon Sözü:</label>
+                <input type="text" id="cms-motivasyon_sozu" required>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">WhatsApp Katılım Grubu Linki:</label>
+                <input type="text" id="cms-whatsapp_link" required>
+            </div>
+
+            <div class="admin-section-title">🏋️‍♂️ Bölüm 3: Kurucu Bilgileri & Yarışma Düzeni</div>
+            <div class="card" style="border-left-color: #ff9800;">
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Kurucu Alanı Başlığı:</label>
+                <input type="text" id="cms-kurucu_baslik" required>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Kurucu Kimdir Sorusunun Metni:</label>
+                <input type="text" id="cms-kurucu_kimdir" required>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Kurucu Biyografi/Açıklama Detayı:</label>
+                <textarea id="cms-kurucu_detay" rows="3" required></textarea>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Kurucu Fotoğraf Linki (URL):</label>
+                <input type="text" id="cms-kurucu_resim" required>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Yarışma İşleyiş Başlığı:</label>
+                <input type="text" id="cms-isleyis_baslik" required>
+                
+                <label style="display:block; margin-bottom:8px; font-weight:500;">Yarışma İşleyiş Açıklama Paragrafı:</label>
+                <textarea id="cms-isleyis_p" rows="4" required></textarea>
+            </div>
+
+            <div class="admin-section-title">📞 Bölüm 4: Kurumsal İletişim & Sosyal Medya</div>
+            <div class="card" style="border-left-color: #ff9800;">
+                <div class="panel-grid">
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">Resmi Web Sitesi Adresi:</label>
+                        <input type="text" id="cms-iletisim_web" required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">Kurucu Telefon Numarası:</label>
+                        <input type="text" id="cms-iletisim_tel" required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">Kurucu Instagram Profil Linki:</label>
+                        <input type="text" id="cms-instagram_cagin" required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:8px; font-weight:500;">HeySocial Instagram Profil Linki:</label>
+                        <input type="text" id="cms-instagram_kurumsal" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-admin-save">🚀 Değişiklikleri Kaydet ve Sitede Canlıya Al</button>
+        </form>
+    </div>
+
+</div>
+
+<div class="footer">Hey!Social © 2026 <span id="footerSiteTitle"></span> - Developed by MEG Software</div>
+
+<div class="cookie-console" id="cookieConsole" role="dialog" aria-live="polite" aria-label="Çerez tercihleri">
+    <div>
+        <strong>🍪 HeySocial çerezleri</strong>
+        <p>Demo verileri, tema tercihi ve sahte oturum bilgileri bu tarayıcıda tutulur. Kabul etmeden önce <a onclick="navigateTo('hizmet_politikasi')">Hizmet Politikası</a>, <a onclick="navigateTo('gizlilik_politikasi')">Gizlilik Politikası</a>, <a onclick="navigateTo('kvkk')">KVKK Aydınlatma Metni</a> ve <a onclick="navigateTo('cerez_politikasi')">Çerez Politikası</a> sayfalarını okuyabilirsiniz.</p>
+    </div>
+    <div class="cookie-actions">
+        <button type="button" onclick="acceptCookies()">Kabul Et</button>
+        <button type="button" class="btn-ghost" onclick="declineCookies()">Sadece Gerekli</button>
+    </div>
+</div>
+
+<script>
+    // Database and State simulation
+    const hidden_personnels = new Set(["Çağın Mert Parlak", "Muhammed Eymen Günay", "Hazal Çakır"]);
+    
+    const EGZERSİZ_HAVUZU = {
+        "Kollar": ["Push-up (Şınav)", "Bicep Curl", "Tricep Dips", "Diamond Push-up", "Plank Tap"],
+        "Bacaklar": ["Squat (Çömelme)", "Lunges", "Bulgarian Split Squat", "Calf Raise", "Wall Sit"],
+        "Karın": ["Crunch (Mekik)", "Plank", "Leg Raise", "Russian Twist", "Mountain Climbers"],
+        "Sırt": ["Supermans", "Inverted Row", "Pull-up", "Bird-Dog", "Deadlift"],
+        "Omuz": ["Pike Push-up", "Lateral Raise", "Front Raise", "Arm Circles", "Shoulder Press"],
+        "Kalça": ["Glute Bridges", "Donkey Kicks", "Fire Hydrants", "Sumo Squat", "Clamshells"]
+    };
+
+    const default_site_verileri = {
+        "renk_primary": "#ff3366",       
+        "renk_nav_bg": "#0d0d11",        
+        "renk_header_gradient_1": "#ff3366", 
+        "renk_header_gradient_2": "#7000ff", 
+        "site_baslik": "Hey!Social Web",     
+        "anasayfa_h1": "HeySocial Kuruluş Amacı",
+        "anasayfa_p1": "Hey Social aslında sıradan bir şirket değildir; burada insanların görüşleri önementsenir, profesyonel spor disiplini eğlenceyle birleştirilir. Düzenlenen dönemsel spor yarışmalarıyla topluluk içi motivasyon zirvede tutulur.",
+        "yarismalar_baslik": "🏆 Haftalık Yarışma & Ödül Durumu",
+        "yarismalar_p": "Kazanana cafe vb. yerlerde istediği ısmarlanır. Bence burası herkes için gereklidir.",
+        "motivasyon_sozu": "Bugün yapmadığın antrenmanın yarın telafisi olmaz!",
+        "whatsapp_link": "https://chat.whatsapp.com/yourgroup",
+        "kurucu_baslik": "🏆 Kurucumuz ve Vizyonerimiz",
+        "kurucu_kimdir": "Çağın Mert Parlak kimdir?",
+        "kurucu_detay": "HeySocial'ın kurucusu ve baş antrenörüdür. Sporu bir yaşam biçimi haline getirmeyi hedefler.",
+        "kurucu_resim":"static/cagin_hoca.jpg",
+        "isleyis_baslik": "🏋️‍♂️ Antrenman İşleyişimiz",
+        "isleyis_p": "Exedra Sports (Burnout) derslerimiz dinamik bir hazırlıkla (ısınma, stretching, lunge serileri) başlar. Antrenmanların odağında yüksek yoğunluklu kardiyo ve fonksiyonel fitness yer alır. Kondisyonunuzu ve patlayıcı gücünüzü artırmak için en doğru yerdesiniz.",
+        "iletisim_web": "https://hey-social.vercel.app/",
+        "iletisim_tel": "+90 553 258 44 09",
+        "instagram_cagin": "https://instagram.com/cagin_parlakcoaching",
+        "instagram_kurumsal": "https://instagram.com/hey.social_"
+    };
+
+    // Load initial structures from localStorage or templates
+    let users = JSON.parse(localStorage.getItem('hey_users')) || {};
+    let site_verileri = JSON.parse(localStorage.getItem('hey_site_verileri')) || default_site_verileri;
+    let liderler_listesi = JSON.parse(localStorage.getItem('hey_liderler')) || [];
+    let etkinlikler_listesi = JSON.parse(localStorage.getItem('hey_etkinlikler')) || [];
+    let current_session = JSON.parse(localStorage.getItem('hey_session')) || null;
+
+    // UI Engine & Routing
+    function navigateTo(pageId) {
+        const publicPages = ['login', 'register', 'hizmet_politikasi', 'gizlilik_politikasi', 'kvkk', 'cerez_politikasi'];
+        if (!current_session && !publicPages.includes(pageId)) {
+            pageId = 'login';
+        }
+        
+        document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
+        const activePage = document.getElementById(`page-${pageId}`);
+        if(activePage) activePage.classList.add('active');
+
+        // Close navigation menu
+        document.getElementById('mainNav').classList.remove('open');
+        document.getElementById('hamburgerBtn').classList.remove('open');
+
+        // Dynamic page setups
+        if (pageId === 'home') loadHomePage();
+        if (pageId === 'liderlik_tablosu') loadLiderlikPage();
+        if (pageId === 'guncel_etkinlikler') loadEtkinliklerPage();
+        if (pageId === 'gunun_egzersizi') loadNewChallenge();
+        if (pageId === 'profilim') loadProfilPage();
+        if (pageId === 'iletisim') loadIletisimPage();
+        if (pageId === 'personel_paneli') loadCMSPanel();
+        
+        window.scrollTo(0,0);
+        renderNav();
+    }
+
+    function showFlash(msg, type) {
+        const flash = document.getElementById('flashMsg');
+        flash.innerText = msg;
+        flash.className = `flash-msg ${type}-msg`;
+        flash.style.display = 'block';
+        setTimeout(() => { flash.style.display = 'none'; }, 4000);
+    }
+
+    // Auth actions
+    function handleRegister(e) {
+        e.preventDefault();
+        const email = document.getElementById('reg-email').value.trim();
+        const username = document.getElementById('reg-username').value.trim();
+        const password = document.getElementById('reg-password').value.trim();
+        const role = document.getElementById('reg-role').value;
+
+        if (users[username]) {
+            showFlash('Bu kullanıcı adı zaten alınmış!', 'error');
+            return;
+        }
+        if (role === 'personel' && !hidden_personnels.has(username)) {
+            showFlash('Yetkili eğitmen listesinde bu isim yer almıyor! Sadece Kurucu Personeller bu yetkiyle açabilir.', 'error');
+            return;
+        }
+
+        users[username] = { email, password, role, photo: null, bmi: null, kalori: null };
+        localStorage.setItem('hey_users', JSON.stringify(users));
+        showFlash('Hesabınız başarıyla oluşturuldu! Şimdi giriş yapabilirsiniz.', 'success');
+        navigateTo('login');
+    }
+
+    function handleLogin(e) {
+        e.preventDefault();
+        const username = document.getElementById('login-username').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+
+        if (users[username] && users[username].password === password) {
+            current_session = { user: username, role: users[username].role };
+            localStorage.setItem('hey_session', JSON.stringify(current_session));
+            showFlash(`Giriş Başarılı. Hoş geldiniz, ${username}!`, 'success');
+            navigateTo('home');
+        } else {
+            showFlash('Kullanıcı adı veya şifre hatalı! Kontrol edin veya Yeniden Kayıt Olun.', 'error');
+        }
+    }
+
+    function startDemoMode() {
+        const demoUser = "HeySocial Demo";
+        users[demoUser] = users[demoUser] || {
+            email: "demo@hey.social",
+            password: "demo",
+            role: "kullanici",
+            photo: null,
+            bmi: "22.4",
+            kalori: 2350
+        };
+        localStorage.setItem('hey_users', JSON.stringify(users));
+        current_session = { user: demoUser, role: "kullanici" };
+        localStorage.setItem('hey_session', JSON.stringify(current_session));
+        showFlash('Demo modu açıldı. Her şey tarayıcınızda sahte veri olarak çalışır.', 'success');
+        navigateTo('home');
+    }
+
+    function confirmLogout() {
+        if(confirm("HeySocial'dan çıkış yapmak istediğinize emin misiniz?")) {
+            current_session = null;
+            localStorage.removeItem('hey_session');
+            showFlash('Başarıyla çıkış yapıldı.', 'success');
+            navigateTo('login');
+        }
+    }
+
+    // Dynamic View Fillers
+    function applyStyleVariables() {
+        document.documentElement.style.setProperty('--primary-color', site_verileri.renk_primary);
+        // Dynamic conversion logic for glow architecture
+        if(site_verileri.renk_primary.startsWith('#')) {
+            let c = site_verileri.renk_primary.substring(1);
+            if(c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+            const r = parseInt(c.substring(0,2), 16);
+            const g = parseInt(c.substring(2,4), 16);
+            const b = parseInt(c.substring(4,6), 16);
+            document.documentElement.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
+        }
+        document.documentElement.style.setProperty('--nav-bg-color', site_verileri.renk_nav_bg);
+        document.documentElement.style.setProperty('--gradient-1', site_verileri.renk_header_gradient_1);
+        document.documentElement.style.setProperty('--gradient-2', site_verileri.renk_header_gradient_2);
+        
+        document.getElementById('siteTitle').innerText = site_verileri.site_baslik;
+        document.getElementById('siteHeader').innerText = site_verileri.site_baslik;
+        document.getElementById('footerSiteTitle').innerText = site_verileri.site_baslik;
+    }
+
+    function loadHomePage() {
+        document.getElementById('view-anasayfa_h1').innerText = site_verileri.anasayfa_h1;
+        document.getElementById('view-anasayfa_p1').innerText = site_verileri.anasayfa_p1;
+        document.getElementById('view-yarismalar_baslik').innerText = site_verileri.yarismalar_baslik;
+        document.getElementById('view-yarismalar_p').innerText = site_verileri.yarismalar_p;
+        document.getElementById('view-motivasyon_sozu').innerText = site_verileri.motivasyon_sozu;
+        document.getElementById('view-kurucu_baslik').innerText = site_verileri.kurucu_baslik;
+        document.getElementById('view-kurucu_kimdir').innerText = site_verileri.kurucu_kimdir;
+        document.getElementById('view-kurucu_detay').innerText = site_verileri.kurucu_detay;
+        document.getElementById('view-kurucu_resim').src = site_verileri.kurucu_resim;
+        document.getElementById('view-isleyis_baslik').innerText = site_verileri.isleyis_baslik;
+        document.getElementById('view-isleyis_p').innerText = site_verileri.isleyis_p;
+        document.getElementById('view-whatsapp_link').href = site_verileri.whatsapp_link;
+    }
+
+    function loadIletisimPage() {
+        document.getElementById('view-iletisim_tel').innerText = site_verileri.iletisim_tel;
+        document.getElementById('view-instagram_cagin').href = site_verileri.instagram_cagin;
+        document.getElementById('view-instagram_kurumsal').href = site_verileri.instagram_kurumsal;
+    }
+
+    function loadLiderlikPage() {
+        const tbody = document.getElementById('liderlik-tablo-body');
+        if (liderler_listesi.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--text-muted);">Şu an tabloda hiç yarışmacı yok.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = liderler_listesi.map(s => `
+            <tr>
+                <td>${s.sira}</td>
+                <td style='font-weight:600; color: var(--text-main);'>${s.isim}</td>
+                <td>${s.skor}</td>
+                <td>${s.unvan || ''}</td>
+            </tr>
+        `).join('');
+    }
+
+    function loadEtkinliklerPage() {
+        const showcase = document.getElementById('etkinlikler-showcase');
+        if (etkinlikler_listesi.length === 0) {
+            showcase.innerHTML = `
+                <div class="event-empty">
+                    <strong>📭 Henüz etkinlik yayınlanmadı</strong>
+                    <p>Personeller tarafından yeni bir etkinlik eklendiğinde burada görünecektir.</p>
+                </div>
+            `;
+            return;
+        }
+
+        showcase.innerHTML = etkinlikler_listesi.map((etk, index) => `
+            <article class="event-card">
+                <div class="event-date">${etk.tarih || 'Yakında'}</div>
+                <div class="event-body">
+                    <span class="event-kicker">HeySocial Etkinliği #${index + 1}</span>
+                    <h3>${etk.baslik}</h3>
+                    <p>${etk.detay}</p>
+                    <div class="event-meta">
+                        <span>📍 ${etk.konum || 'Konum yakında'}</span>
+                        <span>🔥 Topluluk modu</span>
+                    </div>
+                </div>
+            </article>
+        `).join('');
+    }
+
+    function loadProfilPage() {
+        const uData = users[current_session.user];
+        document.getElementById('profile-username-text').innerText = current_session.user;
+        document.getElementById('profile-role-text').innerText = current_session.role === 'personel' ? "HeySocial Kurucu/Eğitmen" : "HeySocial Üyesi";
+        document.getElementById('profile-email-text').innerText = uData.email || '-';
+        document.getElementById('profile-bmi-text').innerText = uData.bmi ? `${uData.bmi} (Kalori: ${uData.kalori || 0} kcal)` : 'Hesaplanmadı';
+        
+        if(uData.photo) {
+            document.getElementById('profile-avatar').src = uData.photo;
+        } else {
+            document.getElementById('profile-avatar').src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+        }
+    }
+
+    function uploadPhoto(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                users[current_session.user].photo = event.target.result;
+                localStorage.setItem('hey_users', JSON.stringify(users));
+                document.getElementById('profile-avatar').src = event.target.result;
+                showFlash('Profil resminiz güncellendi!', 'success');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Workout Planner Business Logic
+    function toggleOtherInput() {
+        const id = document.getElementById('hedefSelect').value;
+        document.getElementById('digerInput').style.display = id === 'diger' ? 'block' : 'none';
+    }
+
+    function generateWorkout(e) {
+        e.preventDefault();
+        const checkboxes = document.querySelectorAll('input[name="bolge"]:checked');
+        const hedef = document.getElementById('hedefSelect').value;
+        const diger_hedef = document.getElementById('digerInput').value.trim();
+        const seviye = document.getElementById('seviyeSelect').value;
+        const hedef_yazi = (hedef === 'diger' && diger_hedef) ? diger_hedef : hedef;
+
+        if (checkboxes.length === 0 || !hedef_yazi || !seviye) {
+            showFlash("Eksik alan bıraktınız!", "error");
+            return;
+        }
+
+        let set_tekrar = "3 Set x 12 Tekrar";
+        if (seviye === "Başlangıç") set_tekrar = "3 Set x 10 Tekrar";
+        else if (seviye === "İleri") set_tekrar = "4 Set x 15 Tekrar";
+
+        let uretilenler = [];
+        checkboxes.forEach(cb => {
+            const b = cb.value;
+            if (EGZERSİZ_HAVUZU[b]) {
+                const pool = [...EGZERSİZ_HAVUZU[b]];
+                const shuffled = pool.sort(() => 0.5 - Math.random());
+                const selected = shuffled.slice(0, 2);
+                selected.forEach(egzersiz => {
+                    uretilenler.push(`<li style="margin-bottom:10px;"><strong>${b} - ${egzersiz}:</strong> ${set_tekrar}</li>`);
+                });
+            }
+        });
+
+        const resultBlock = document.getElementById('workout-result-block');
+        resultBlock.innerHTML = `
+            <h2>Size Özel Akıllı Antrenman Programı</h2>
+            <div class="card">
+                <p><strong>🎯 Hedeflenen Amaç:</strong> ${hedef_yazi} | <strong>📊 Seviye:</strong> ${seviye}</p>
+                <hr style="border:0; border-top:1px solid var(--border-color); margin:20px 0;">
+                <ul style="padding-left:20px; color:var(--text-main);">
+                    <li style="margin-bottom:10px;"><strong>Isınma Bölümü:</strong> 8 Dakika Hafif Tempo Koşu ve Eklemleri Açma</li>
+                    ${uretilenler.join('')}
+                    <li style="margin-bottom:10px;"><strong>Soğuma Bölümü:</strong> 5 Dakika Statik Stretching</li>
+                </ul>
+            </div>
+            <button onclick="resetWorkoutPlanner()">Yeniden Program Hesapla</button>
+        `;
+        document.getElementById('workout-form-block').style.display = 'none';
+        resultBlock.style.display = 'block';
+    }
+
+    function resetWorkoutPlanner() {
+        document.getElementById('workout-form-block').style.display = 'block';
+        document.getElementById('workout-result-block').style.display = 'none';
+    }
+
+    // Challenges Engine
+    function loadNewChallenge() {
+        const challenges = [
+            {"isim": "100 Squat Challenge", "detay": "Gün sonuna kadar toplamda 100 çömelme hareketi yap."},
+            {"isim": "3 Dakika Plank", "detay": "Vücudunu düz tutarak 3 dakika aralıksız dayanın."},
+            {"isim": "Burpee Patlaması", "detay": "Toplamda 40 adet Burpee tamamlayarak yağ yakımını başlat."}
+        ];
+        const secilen = challenges[Math.floor(Math.random() * challenges.length)];
+        document.getElementById('challenge-title').innerText = secilen.isim;
+        document.getElementById('challenge-detail').innerText = secilen.detay;
+    }
+
+    // BMI Calculator
+    function calculateBMI(e) {
+        e.preventDefault();
+        const kilo = parseFloat(document.getElementById('bmi-kilo').value);
+        const boy = parseFloat(document.getElementById('bmi-boy').value) / 100;
+        const yas = parseInt(document.getElementById('bmi-yas').value);
+        const aktivite = parseFloat(document.getElementById('bmi-aktivite').value);
+
+        const bmi = (kilo / (boy * boy)).toFixed(1);
+        let durum = "Normal";
+        if (bmi < 18.5) durum = "Zayıf";
+        else if (bmi < 25) durum = "Normal Kilolu";
+        else if (bmi < 30) durum = "Fazla Kilolu";
+        else durum = "Obez";
+
+        const brm = (10 * kilo) + (6.25 * boy * 100) - (5 * yas) + 5;
+        const gunluk_kalori = Math.floor(brm * aktivite);
+
+        // Sync into state
+        users[current_session.user].bmi = bmi;
+        users[current_session.user].kalori = gunluk_kalori;
+        localStorage.setItem('hey_users', JSON.stringify(users));
+
+        document.getElementById('bmi-result-card').innerHTML = `
+            <div class="card" style="background: rgba(76, 175, 80, 0.1); color: #4caf50; border-left-color: #4caf50;">
+                <h3>📊 Hesaplama Raporu</h3>
+                <p style="color:var(--text-main)"><strong>Vücut Kitle İndeksiniz (BMI):</strong> ${bmi} (${durum})</p>
+                <p style="color:var(--text-main)"><strong>Günlük Kalori İhtiyacınız:</strong> ${gunluk_kalori} kcal</p>
+            </div>
+        `;
+    }
+
+    // App Preferences Setup
+    function saveSettings(e) {
+        e.preventDefault();
+        const theme = document.getElementById('setting-theme').value;
+        localStorage.setItem('hey_theme', theme);
+        applyTheme();
+        showFlash("Tema tercihi güncellendi.", "success");
+    }
+
+    function applyTheme() {
+        const theme = localStorage.getItem('hey_theme') || 'dark';
+        if(theme === 'dark') {
+            document.body.classList.remove('light-mode');
+            document.getElementById('themeSwitch').innerText = '☀️';
+        } else {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeSwitch').innerText = '🌙';
+        }
+    }
+
+    function toggleThemeMode() {
+        const isLight = document.body.classList.contains('light-mode');
+        localStorage.setItem('hey_theme', isLight ? 'dark' : 'light');
+        applyTheme();
+        showFlash(isLight ? 'Karanlık mod açıldı.' : 'Açık tema açıldı.', 'success');
+    }
+
+    function acceptCookies() {
+        localStorage.setItem('hey_cookie_choice', 'accepted');
+        document.getElementById('cookieConsole').classList.add('is-hidden');
+        showFlash('Çerez tercihiniz kaydedildi.', 'success');
+    }
+
+    function declineCookies() {
+        localStorage.setItem('hey_cookie_choice', 'necessary');
+        document.getElementById('cookieConsole').classList.add('is-hidden');
+        showFlash('Sadece gerekli çerezler aktif.', 'success');
+    }
+
+    function initCookieConsole() {
+        const choice = localStorage.getItem('hey_cookie_choice');
+        if (choice) {
+            document.getElementById('cookieConsole').classList.add('is-hidden');
+        }
+    }
+
+    // ================= GLOBAL CMS PANEL WORKFLOW =================
+    function loadCMSPanel() {
+        document.getElementById('cms-user-welcome').innerText = current_session.user;
+        
+        // Fill out text fields
+        for(let key in site_verileri) {
+            const input = document.getElementById(`cms-${key}`);
+            if(input) input.value = site_verileri[key];
+        }
+        renderCMSLists();
+    }
+
+    function renderCMSLists() {
+        // Render leaders editor
+        const leadersDiv = document.getElementById('cms-liderler-listesi');
+        if(liderler_listesi.length === 0) {
+            leadersDiv.innerHTML = "<p style='color: var(--text-muted); font-style: italic; text-align: center;'>Şu an tabloda hiç yarışmacı yok. Aşağıdan ilkini ekleyebilirsiniz!</p>";
+        } else {
+            leadersDiv.innerHTML = liderler_listesi.map((lider, index) => `
+                <div style="margin-bottom: 15px; padding: 20px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.01); border-radius: 16px;">
+                    <div style="margin:0; display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                        <input type="text" id="edit-lider-sira-${index}" value="${lider.sira}" style="width: 70px; padding: 12px; text-align: center; margin:0;" required>
+                        <input type="text" id="edit-lider-isim-${index}" value="${lider.isim}" style="width: 200px; padding: 12px; text-align: center; margin:0;" required>
+                        <input type="text" id="edit-lider-skor-${index}" value="${lider.skor}" style="width: 110px; padding: 12px; text-align: center; margin:0;" required>
+                        <input type="text" id="edit-lider-unvan-${index}" value="${lider.unvan || ''}" style="width: 170px; padding: 12px; text-align: center; margin:0;">
+                        <button onclick="updateLider(${index})" style="background: #4CAF50; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 12px; font-weight: 600; width: auto; box-shadow:none;">✍️ Güncelle</button>
+                        <button onclick="deleteLider(${index})" style="background: #f44336; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 12px; font-weight: 600; width: auto; box-shadow:none;">❌ Sil</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render events editor
+        const eventsDiv = document.getElementById('cms-etkinlikler-listesi');
+        if(etkinlikler_listesi.length === 0) {
+            eventsDiv.innerHTML = "<p style='color: var(--text-muted); font-style: italic; text-align: center;'>Şu an planlanmış bir güncel etkinlik yok. Aşağıdan ilkini ekleyebilirsiniz!</p>";
+        } else {
+            eventsDiv.innerHTML = etkinlikler_listesi.map((etk, index) => `
+                <div style="margin-bottom: 15px; padding: 20px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.01); border-radius: 16px;">
+                    <div style="margin:0; display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                        <input type="text" id="edit-etk-tarih-${index}" value="${etk.tarih}" style="width: 140px; padding: 12px; text-align: center; margin:0;" required>
+                        <input type="text" id="edit-etk-baslik-${index}" value="${etk.baslik}" style="width: 200px; padding: 12px; text-align: center; margin:0;" required>
+                        <input type="text" id="edit-etk-detay-${index}" value="${etk.detay}" style="width: 250px; padding: 12px; text-align: center; margin:0;" required>
+                        <input type="text" id="edit-etk-konum-${index}" value="${etk.konum || ''}" style="width: 140px; padding: 12px; text-align: center; margin:0;">
+                        <button onclick="updateEtkinlik(${index})" style="background: #4CAF50; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 12px; font-weight: 600; width: auto; box-shadow:none;">✍️ Güncelle</button>
+                        <button onclick="deleteEtkinlik(${index})" style="background: #f44336; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 12px; font-weight: 600; width: auto; box-shadow:none;">❌ Sil</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // CMS Add/Update/Deletes
+    function addLider(e) {
+        e.preventDefault();
+        liderler_listesi.push({
+            sira: document.getElementById('add-lider-sira').value.trim(),
+            isim: document.getElementById('add-lider-isim').value.trim(),
+            skor: document.getElementById('add-lider-skor').value.trim(),
+            unvan: document.getElementById('add-lider-unvan').value.trim()
+        });
+        localStorage.setItem('hey_liderler', JSON.stringify(liderler_listesi));
+        showFlash("Yeni yarışmacı başarıyla eklendi!", "success");
+        renderCMSLists();
+    }
+
+    function updateLider(index) {
+        liderler_listesi[index] = {
+            sira: document.getElementById(`edit-lider-sira-${index}`).value.trim(),
+            isim: document.getElementById(`edit-lider-isim-${index}`).value.trim(),
+            skor: document.getElementById(`edit-lider-skor-${index}`).value.trim(),
+            unvan: document.getElementById(`edit-lider-unvan-${index}`).value.trim()
+        };
+        localStorage.setItem('hey_liderler', JSON.stringify(liderler_listesi));
+        showFlash("Yarışmacı bilgileri güncellendi!", "success");
+    }
+
+    function deleteLider(index) {
+        if(confirm('Bu yarışmacıyı silmek istediğinize emin misiniz?')) {
+            liderler_listesi.splice(index, 1);
+            localStorage.setItem('hey_liderler', JSON.stringify(liderler_listesi));
+            showFlash("Yarışmacı başarıyla silindi!", "success");
+            renderCMSLists();
+        }
+    }
+
+    function addEtkinlik(e) {
+        e.preventDefault();
+        etkinlikler_listesi.push({
+            tarih: document.getElementById('add-etk-tarih').value.trim(),
+            baslik: document.getElementById('add-etk-baslik').value.trim(),
+            detay: document.getElementById('add-etk-detay').value.trim(),
+            konum: document.getElementById('add-etk-konum').value.trim()
+        });
+        localStorage.setItem('hey_etkinlikler', JSON.stringify(etkinlikler_listesi));
+        showFlash("Yeni etkinlik başarıyla eklendi!", "success");
+        renderCMSLists();
+        loadEtkinliklerPage();
+    }
+
+    function updateEtkinlik(index) {
+        etkinlikler_listesi[index] = {
+            tarih: document.getElementById(`edit-etk-tarih-${index}`).value.trim(),
+            baslik: document.getElementById(`edit-etk-baslik-${index}`).value.trim(),
+            detay: document.getElementById(`edit-etk-detay-${index}`).value.trim(),
+            konum: document.getElementById(`edit-etk-konum-${index}`).value.trim()
+        };
+        localStorage.setItem('hey_etkinlikler', JSON.stringify(etkinlikler_listesi));
+        showFlash("Etkinlik bilgileri güncellendi!", "success");
+        loadEtkinliklerPage();
+    }
+
+    function deleteEtkinlik(index) {
+        if(confirm('Bu etkinliği silmek istediğinize emin misiniz?')) {
+            etkinlikler_listesi.splice(index, 1);
+            localStorage.setItem('hey_etkinlikler', JSON.stringify(etkinlikler_listesi));
+            showFlash("Etkinlik başarıyla silindi!", "success");
+            renderCMSLists();
+            loadEtkinliklerPage();
+        }
+    }
+
+    // Advanced Live Refresh Mapping
+    function saveCMSData(e) {
+        e.preventDefault();
+        for(let key in site_verileri) {
+            const field = document.getElementById(`cms-${key}`);
+            if(field) site_verileri[key] = field.value.trim();
+        }
+        localStorage.setItem('hey_site_verileri', JSON.stringify(site_verileri));
+        applyStyleVariables();
+        showFlash("Değişiklikleri Kaydet ve Sitede Canlıya Al yapıldı!", "success");
+    }
+
+    // Menu Controls
+    function toggleMenu(e) {
+        if(e) { e.stopPropagation(); }
+        document.getElementById('mainNav').classList.toggle('open'); 
+        document.getElementById('hamburgerBtn').classList.toggle('open');
+    }
+
+    function toggleDidemMenu(e) {
+        e.stopPropagation();
+        document.getElementById("didemMenu").classList.toggle("active");
+    }
+
+    document.addEventListener('click', function(e) {
+        var menu = document.getElementById("mainNav");
+        var btn = document.getElementById("hamburgerBtn");
+        if (menu && menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.remove('open');
+            btn.classList.remove('open');
+        }
+
+        var dMenu = document.getElementById("didemMenu");
+        var dBtn = document.querySelector('.didem-hamburger-btn');
+        if (dMenu && dMenu.classList.contains('active') && !dMenu.contains(e.target) && e.target !== dBtn) {
+            dMenu.classList.remove("active");
+        }
+    });
+
+    // Navigation Structure Render
+    function renderNav() {
+        const nav = document.getElementById('mainNav');
+        if (current_session) {
+            let cmsLink = '';
+            if (current_session.role === 'personel') {
+                cmsLink = `<a onclick="navigateTo('personel_paneli')" style="border: 1px solid var(--primary-color); color: var(--primary-color); font-weight: bold; background-color: rgba(255,51,102,0.05);">⚙️ CMS PANEL</a>`;
+            }
+            nav.innerHTML = `
+                <a onclick="navigateTo('home')">🏠 Anasayfa</a>
+                <a onclick="navigateTo('antrenman_programi')">🤖 Antrenman Robotu</a>
+                <a onclick="navigateTo('gunun_egzersizi')">🔥 Günün Egzersizi</a>
+                <a onclick="navigateTo('kalori_takip')">📊 Fit Kalori & BMI</a>
+                <a onclick="navigateTo('liderlik_tablosu')">🏆 Liderlik Tablosu</a>
+                <a onclick="navigateTo('guncel_etkinlikler')">📅 Güncel Etkinlikler</a>
+                <a onclick="navigateTo('profilim')">👤 Profilim</a>
+                <a onclick="navigateTo('iletisim')">📞 İletişim</a>
+                ${cmsLink}
+                <a onclick="confirmLogout()" style="color: #ff4444;">❌ Çıkış Yap</a>
+            `;
+        } else {
+            nav.innerHTML = `
+                <a onclick="navigateTo('login')">🔑 Giriş Yap</a>
+                <a onclick="navigateTo('register')">📝 Kayıt Ol</a>
+                <a onclick="navigateTo('gizlilik_politikasi')">🔒 Gizlilik</a>
+            `;
+        }
+    }
+
+    // App Initializer
+    applyTheme();
+    applyStyleVariables();
+    initCookieConsole();
+    if(current_session) {
+        navigateTo('home');
+    } else {
+        navigateTo('login');
+    }
+</script>
+</body>
+</html>
